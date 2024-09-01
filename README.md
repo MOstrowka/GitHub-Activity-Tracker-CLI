@@ -1,0 +1,2 @@
+# GitHub Activity Tracker CLI
+ 
