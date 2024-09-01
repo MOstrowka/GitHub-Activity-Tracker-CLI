@@ -37,7 +37,7 @@ def fetch_github_activity(username):
         return None
 
 
-def display_activity(events):
+def display_activity(events, event_type=None):
     if not events:
         print("No recent activity found.")
         return
@@ -45,24 +45,27 @@ def display_activity(events):
     activity_summary = defaultdict(lambda: defaultdict(int))
 
     for event in events:
-        event_type = event['type']
+        if event_type and event['type'] != event_type:
+            continue
+
+        event_type_name = event['type']
         repo_name = event['repo']['name']
 
-        if event_type == 'PushEvent':
+        if event_type_name == 'PushEvent':
             commit_count = len(event['payload']['commits'])
             activity_summary[repo_name]['PushEvent'] += commit_count
-        elif event_type == 'IssuesEvent':
+        elif event_type_name == 'IssuesEvent':
             action = event['payload']['action']
             activity_summary[repo_name][f"IssuesEvent-{action}"] += 1
-        elif event_type == 'WatchEvent':
+        elif event_type_name == 'WatchEvent':
             activity_summary[repo_name]['WatchEvent'] += 1
-        elif event_type == 'PullRequestEvent':
+        elif event_type_name == 'PullRequestEvent':
             action = event['payload']['action']
             activity_summary[repo_name][f"PullRequestEvent-{action}"] += 1
-        elif event_type == 'CreateEvent':
+        elif event_type_name == 'CreateEvent':
             ref_type = event['payload']['ref_type']
             activity_summary[repo_name][f"CreateEvent-{ref_type}"] += 1
-        elif event_type == 'PublicEvent':
+        elif event_type_name == 'PublicEvent':
             activity_summary[repo_name]['PublicEvent'] += 1
 
     for repo, actions in activity_summary.items():
@@ -90,6 +93,13 @@ def main():
 
     # Add argument for GitHub username or help
     parser.add_argument('username', nargs='?', help='GitHub username to fetch activity for or "help" to display help')
+    parser.add_argument(
+        '--event-type',
+        help=(
+            'Filter activities by event type. Available types: '
+            'PushEvent, IssuesEvent, WatchEvent, PullRequestEvent, CreateEvent, PublicEvent'
+        )
+    )
 
     # Parse the arguments
     args = parser.parse_args()
@@ -105,7 +115,7 @@ def main():
 
     # Only display activity if events are fetched successfully
     if events:
-        display_activity(events)
+        display_activity(events, args.event_type)
 
 
 if __name__ == '__main__':
