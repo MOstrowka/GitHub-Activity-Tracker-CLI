@@ -63,4 +63,4 @@ Error: User 'nonexistinguser' not found.
 
 ## Project URL
 
-For more details about this project, visit the [Task Tracker Project Page](https://roadmap.sh/projects/task-tracker).
+For more details about this project, visit the [Github User Activity Project Page](https://roadmap.sh/projects/github-user-activity).
