@@ -14,7 +14,7 @@ GitHub Activity Tracker CLI is a command-line tool designed to fetch and display
 1. **Clone the repository:**
 
    ```bash
-   git clone <URL_OF_YOUR_REPOSITORY>
+   git clone Miniomamen/GitHub-Activity-Tracker-CLI
    cd GitHub-Activity-Tracker-CLI
    ```
 
